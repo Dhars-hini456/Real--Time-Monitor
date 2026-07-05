@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% block title %}{{ 'Admin - All Applications' if admin_view else 'Officer Dashboard' }}{% endblock %}
+{% block content %}
+<div class="container mt-4">
+    <h3 class="section-title">{{ 'All Applications' if admin_view else 'Revenue Officer Dashboard' }}</h3>
+
+    {% if not admin_view %}
+    <div class="row g-3 mb-4">
+        <div class="col-md-3 col-6">
+            <a href="{{ url_for('officer_dashboard', status='all') }}" class="text-decoration-none">
+                <div class="stat-card bg-grad-blue"><p>All Applications</p><h2>{{ counts.all }}</h2></div>
+            </a>
+        </div>
+        <div class="col-md-3 col-6">
+            <a href="{{ url_for('officer_dashboard', status='Pending') }}" class="text-decoration-none">
+                <div class="stat-card bg-grad-orange"><p>Pending</p><h2>{{ counts.Pending }}</h2></div>
+            </a>
+        </div>
+        <div class="col-md-3 col-6">
+            <a href="{{ url_for('officer_dashboard', status='Approved') }}" class="text-decoration-none">
+                <div class="stat-card bg-grad-green"><p>Approved</p><h2>{{ counts.Approved }}</h2></div>
+            </a>
+        </div>
+        <div class="col-md-3 col-6">
+            <a href="{{ url_for('officer_dashboard', status='Rejected') }}" class="text-decoration-none">
+                <div class="stat-card bg-grad-red"><p>Rejected</p><h2>{{ counts.Rejected }}</h2></div>
+            </a>
+        </div>
+    </div>
+    {% endif %}
+
+    <div class="dashboard-card">
+        <h5 class="mb-3">Applications {% if not admin_view %}({{ status_filter }}){% endif %}</h5>
+        {% if applications %}
+        <div class="table-responsive">
+            <table class="table table-gov table-hover align-middle">
+                <thead>
+                    <tr>
+                        <th>App. No.</th>
+                        <th>Applicant</th>
+                        <th>Certificate Type</th>
+                        <th>District</th>
+                        <th>Applied On</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for app in applications %}
+                    <tr>
+                        <td>{{ app.application_no }}</td>
+                        <td>{{ app.applicant_name }}</td>
+                        <td>{{ app.cert_type }}</td>
+                        <td>{{ app.district }}</td>
+                        <td>{{ (app.created_at | parse_dt).strftime('%d-%m-%Y') }}</td>
+                        <td><span class="badge-status status-{{ app.status }}">{{ app.status }}</span></td>
+                        <td>
+                            {% if admin_view %}
+                            <a href="{{ url_for('admin_view_application', app_id=app.id) }}" class="btn btn-sm btn-outline-primary"><i class="fa-solid fa-eye"></i> View</a>
+                            {% else %}
+                            <a href="{{ url_for('officer_view_application', app_id=app.id) }}" class="btn btn-sm btn-outline-primary"><i class="fa-solid fa-eye"></i> Review</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <p class="text-muted text-center py-4">No applications found.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

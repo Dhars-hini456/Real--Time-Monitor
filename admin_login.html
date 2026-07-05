@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}Admin Login - Online Certificate Portal{% endblock %}
+{% block content %}
+<div class="container">
+    <div class="auth-card" style="border-top-color: var(--gov-red);">
+        <div class="text-center mb-4">
+            <i class="fa-solid fa-user-shield fa-2x" style="color: var(--gov-red);"></i>
+            <h3 class="mt-2">Administrator Login</h3>
+            <p class="text-muted small">Manage officers and monitor the full system</p>
+        </div>
+        <form method="POST">
+            <div class="mb-3">
+                <label class="form-label">Email Address</label>
+                <input type="email" class="form-control" name="email" required autofocus>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Password</label>
+                <input type="password" class="form-control" name="password" required>
+            </div>
+            <button type="submit" class="btn w-100" style="background: var(--gov-red); color: #fff; font-weight:600;"><i class="fa-solid fa-right-to-bracket"></i> Login</button>
+        </form>
+        <p class="text-center small text-muted mt-3">Default demo credentials: admin@revenue.gov.in / admin123</p>
+        <hr>
+        <p class="text-center small mb-0"><a href="{{ url_for('login') }}">Back to Citizen Login</a></p>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+{% block title %}Apply for Certificate{% endblock %}
+{% block content %}
+<div class="container mt-4">
+    <div class="dashboard-card">
+        <h4 class="section-title">Apply for Certificate</h4>
+        <form method="POST" enctype="multipart/form-data">
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label class="form-label">Certificate Type *</label>
+                    <select class="form-select" id="cert_type" name="cert_type" required>
+                        <option value="">-- Select Certificate Type --</option>
+                        {% for ct in cert_types %}
+                        <option value="{{ ct }}">{{ ct }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Applicant Full Name *</label>
+                    <input type="text" class="form-control" name="applicant_name" value="{{ session.get('name') }}" required>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label">Father's / Guardian's Name</label>
+                    <input type="text" class="form-control" name="father_name">
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Date of Birth</label>
+                    <input type="date" class="form-control" name="dob">
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Gender</label>
+                    <select class="form-select" name="gender">
+                        <option value="">Select</option>
+                        <option>Male</option>
+                        <option>Female</option>
+                        <option>Other</option>
+                    </select>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label">Caste / Community</label>
+                    <input type="text" class="form-control" name="caste" placeholder="e.g. OBC, SC, ST, General">
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Religion</label>
+                    <input type="text" class="form-control" name="religion">
+                </div>
+
+                <div class="col-md-6 d-none" id="incomeFieldWrapper">
+                    <label class="form-label">Annual Family Income (Rs.)</label>
+                    <input type="number" class="form-control" name="annual_income" min="0">
+                </div>
+
+                <div class="col-12">
+                    <label class="form-label">Residential Address *</label>
+                    <textarea class="form-control" name="address" rows="2" required></textarea>
+                </div>
+
+                <div class="col-md-4">
+                    <label class="form-label">Village / Town *</label>
+                    <input type="text" class="form-control" name="village" required>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Taluk *</label>
+                    <input type="text" class="form-control" name="taluk" required>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">District *</label>
+                    <input type="text" class="form-control" name="district" required>
+                </div>
+
+                <div class="col-12">
+                    <label class="form-label">Purpose of Certificate *</label>
+                    <input type="text" class="form-control" name="purpose" placeholder="e.g. Educational admission, Scholarship, Employment" required>
+                </div>
+            </div>
+
+            <hr class="my-4">
+            <h5 class="mb-3">Upload Supporting Documents</h5>
+            <p class="text-muted small">Accepted formats: PDF, JPG, PNG (Max 10MB per file)</p>
+
+            <div id="documentsContainer">
+                <div class="doc-upload-row row g-2 align-items-center">
+                    <div class="col-md-5">
+                        <select class="form-select" name="doc_type" required>
+                            <option value="">-- Select Document Type --</option>
+                            {% for dt in doc_types %}
+                            <option value="{{ dt }}">{{ dt }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <input type="file" class="form-control" name="documents" accept=".pdf,.png,.jpg,.jpeg" required>
+                    </div>
+                </div>
+            </div>
+            <button type="button" id="addDocumentRow" class="btn btn-sm btn-outline-primary mb-4"><i class="fa-solid fa-plus"></i> Add Another Document</button>
+
+            <div class="d-flex justify-content-end gap-2">
+                <a href="{{ url_for('citizen_dashboard') }}" class="btn btn-outline-secondary">Cancel</a>
+                <button type="submit" class="btn btn-gov-primary"><i class="fa-solid fa-paper-plane"></i> Submit Application</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    window.DOC_TYPES = {{ doc_types|tojson }};
+</script>
+{% endblock %}

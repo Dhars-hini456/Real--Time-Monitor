@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% block title %}Admin Dashboard{% endblock %}
+{% block content %}
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-4">
+        <h3 class="section-title mb-0">Administrator Dashboard</h3>
+        <a href="{{ url_for('add_officer') }}" class="btn btn-gov-primary"><i class="fa-solid fa-user-plus"></i> Add Revenue Officer</a>
+    </div>
+
+    <div class="row g-3 mb-4">
+        <div class="col-md-3 col-6">
+            <div class="stat-card bg-grad-blue"><p>Total Applications</p><h2>{{ total_apps }}</h2></div>
+        </div>
+        <div class="col-md-3 col-6">
+            <div class="stat-card bg-grad-orange"><p>Pending</p><h2>{{ pending }}</h2></div>
+        </div>
+        <div class="col-md-3 col-6">
+            <div class="stat-card bg-grad-green"><p>Approved</p><h2>{{ approved }}</h2></div>
+        </div>
+        <div class="col-md-3 col-6">
+            <div class="stat-card bg-grad-red"><p>Rejected</p><h2>{{ rejected }}</h2></div>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-lg-7">
+            <div class="dashboard-card h-100">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h5 class="mb-0">Recent Applications</h5>
+                    <a href="{{ url_for('admin_applications') }}" class="btn btn-sm btn-outline-primary">View All</a>
+                </div>
+                {% if recent_apps %}
+                <div class="table-responsive">
+                    <table class="table table-gov table-hover align-middle">
+                        <thead><tr><th>App. No.</th><th>Applicant</th><th>Type</th><th>Status</th><th></th></tr></thead>
+                        <tbody>
+                        {% for app in recent_apps %}
+                            <tr>
+                                <td>{{ app.application_no }}</td>
+                                <td>{{ app.applicant_name }}</td>
+                                <td>{{ app.cert_type }}</td>
+                                <td><span class="badge-status status-{{ app.status }}">{{ app.status }}</span></td>
+                                <td><a href="{{ url_for('admin_view_application', app_id=app.id) }}" class="btn btn-sm btn-outline-primary">View</a></td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <p class="text-muted text-center py-4">No applications yet.</p>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="col-lg-5">
+            <div class="dashboard-card h-100">
+                <h5 class="mb-3">Registered Citizens</h5>
+                <h2 class="text-primary">{{ citizens }}</h2>
+                <hr>
+                <h5 class="mb-3">Revenue Officers</h5>
+                {% if officers %}
+                <ul class="list-group">
+                    {% for officer in officers %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <div>
+                            <strong>{{ officer.full_name }}</strong><br>
+                            <span class="small text-muted">{{ officer.email }}</span>
+                        </div>
+                        <a href="{{ url_for('delete_officer', officer_id=officer.id) }}" class="btn btn-sm btn-outline-danger confirm-action" data-confirm="Remove this officer account?"><i class="fa-solid fa-trash"></i></a>
+                    </li>
+                    {% endfor %}
+                </ul>
+                {% else %}
+                <p class="text-muted">No officers added yet.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

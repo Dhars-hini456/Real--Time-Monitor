@@ -1,0 +1,26 @@
+# Byte-compiled files
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Virtual environment
+venv/
+env/
+.venv/
+
+# Database
+instance/*.db
+
+# Uploaded files & generated certificates
+static/uploads/*
+!static/uploads/.gitkeep
+static/certificates/*
+!static/certificates/.gitkeep
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db

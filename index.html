@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+{% block title %}Home - Online Certificate Portal{% endblock %}
+{% block content %}
+
+<section class="hero-section">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-7">
+                <h1 class="hero-title">Online Issuance of Caste and Other Certificates by Revenue Department</h1>
+                <p class="hero-sub mt-3">Apply for Caste, Income, Community, Nativity and Residence certificates
+                    online — track your application status and download your digitally verified certificate,
+                    anytime, anywhere.</p>
+                <div class="mt-4 d-flex gap-3 flex-wrap">
+                    {% if not current_user %}
+                        <a href="{{ url_for('register') }}" class="btn btn-gov-primary"><i class="fa-solid fa-user-plus"></i> New Registration</a>
+                        <a href="{{ url_for('login') }}" class="btn btn-gov-outline"><i class="fa-solid fa-right-to-bracket"></i> Citizen Login</a>
+                    {% else %}
+                        <a href="{{ url_for('citizen_dashboard') }}" class="btn btn-gov-primary"><i class="fa-solid fa-gauge"></i> Go to Dashboard</a>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="col-lg-5 text-center d-none d-lg-block">
+                <i class="fa-solid fa-file-shield" style="font-size: 220px; color: rgba(255,255,255,0.15);"></i>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="container my-5">
+    <h3 class="section-title">Certificates We Issue</h3>
+    <div class="row g-4">
+        <div class="col-md-4 col-lg-4">
+            <div class="service-card">
+                <div class="icon-circle"><i class="fa-solid fa-people-group"></i></div>
+                <h5>Caste Certificate</h5>
+                <p class="text-muted small">Official proof of caste for education, employment and welfare scheme
+                    benefits.</p>
+            </div>
+        </div>
+        <div class="col-md-4 col-lg-4">
+            <div class="service-card">
+                <div class="icon-circle"><i class="fa-solid fa-sack-dollar"></i></div>
+                <h5>Income Certificate</h5>
+                <p class="text-muted small">Verified proof of annual family income for scholarships, loans, and
+                    subsidies.</p>
+            </div>
+        </div>
+        <div class="col-md-4 col-lg-4">
+            <div class="service-card">
+                <div class="icon-circle"><i class="fa-solid fa-users-rectangle"></i></div>
+                <h5>Community Certificate</h5>
+                <p class="text-muted small">Confirms an individual's community/social category for reservation
+                    benefits.</p>
+            </div>
+        </div>
+        <div class="col-md-4 col-lg-4">
+            <div class="service-card">
+                <div class="icon-circle"><i class="fa-solid fa-map-location-dot"></i></div>
+                <h5>Nativity Certificate</h5>
+                <p class="text-muted small">Certifies that the applicant is a native of the state / region for
+                    domicile-based benefits.</p>
+            </div>
+        </div>
+        <div class="col-md-4 col-lg-4">
+            <div class="service-card">
+                <div class="icon-circle"><i class="fa-solid fa-house-chimney"></i></div>
+                <h5>Residence Certificate</h5>
+                <p class="text-muted small">Proof of permanent residence within the jurisdiction of the Revenue
+                    Department.</p>
+            </div>
+        </div>
+        <div class="col-md-4 col-lg-4">
+            <div class="service-card">
+                <div class="icon-circle"><i class="fa-solid fa-clock-rotate-left"></i></div>
+                <h5>Track & Download</h5>
+                <p class="text-muted small">Track your application status in real time and download your
+                    certificate as a PDF once approved.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="container my-5">
+    <h3 class="section-title">How It Works</h3>
+    <div class="row g-4 text-center">
+        <div class="col-md-3 col-6">
+            <div class="dashboard-card h-100">
+                <i class="fa-solid fa-user-plus fa-2x mb-3" style="color: var(--gov-blue);"></i>
+                <h6>1. Register</h6>
+                <p class="small text-muted mb-0">Create your free citizen account.</p>
+            </div>
+        </div>
+        <div class="col-md-3 col-6">
+            <div class="dashboard-card h-100">
+                <i class="fa-solid fa-file-circle-plus fa-2x mb-3" style="color: var(--gov-blue);"></i>
+                <h6>2. Apply Online</h6>
+                <p class="small text-muted mb-0">Fill the form and upload documents.</p>
+            </div>
+        </div>
+        <div class="col-md-3 col-6">
+            <div class="dashboard-card h-100">
+                <i class="fa-solid fa-user-tie fa-2x mb-3" style="color: var(--gov-blue);"></i>
+                <h6>3. Officer Verification</h6>
+                <p class="small text-muted mb-0">Revenue officer reviews & approves.</p>
+            </div>
+        </div>
+        <div class="col-md-3 col-6">
+            <div class="dashboard-card h-100">
+                <i class="fa-solid fa-download fa-2x mb-3" style="color: var(--gov-blue);"></i>
+                <h6>4. Download</h6>
+                <p class="small text-muted mb-0">Get your digital certificate as PDF.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

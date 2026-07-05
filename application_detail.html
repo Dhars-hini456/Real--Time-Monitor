@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block title %}Application Details{% endblock %}
+{% block content %}
+<div class="container mt-4">
+    <a href="{{ url_for('citizen_dashboard') }}" class="btn btn-sm btn-outline-secondary mb-3"><i class="fa-solid fa-arrow-left"></i> Back to Dashboard</a>
+
+    <div class="dashboard-card">
+        <div class="d-flex justify-content-between flex-wrap align-items-center mb-3">
+            <h4 class="mb-0">{{ application.cert_type }}</h4>
+            <span class="badge-status status-{{ application.status }}">{{ application.status }}</span>
+        </div>
+        <p class="text-muted">Application No.: <strong>{{ application.application_no }}</strong> &nbsp;|&nbsp; Submitted on: {{ (application.created_at | parse_dt).strftime('%d-%m-%Y %H:%M') }}</p>
+
+        <hr>
+        <div class="row">
+            <div class="col-md-6">
+                <p><strong>Applicant Name:</strong> {{ application.applicant_name }}</p>
+                <p><strong>Father's/Guardian's Name:</strong> {{ application.father_name or '-' }}</p>
+                <p><strong>Date of Birth:</strong> {{ application.dob or '-' }}</p>
+                <p><strong>Gender:</strong> {{ application.gender or '-' }}</p>
+                <p><strong>Caste/Community:</strong> {{ application.caste or '-' }}</p>
+                <p><strong>Religion:</strong> {{ application.religion or '-' }}</p>
+                {% if application.cert_type == 'Income Certificate' %}
+                <p><strong>Annual Income:</strong> Rs. {{ application.annual_income or '-' }}</p>
+                {% endif %}
+            </div>
+            <div class="col-md-6">
+                <p><strong>Address:</strong> {{ application.address }}</p>
+                <p><strong>Village/Town:</strong> {{ application.village }}</p>
+                <p><strong>Taluk:</strong> {{ application.taluk }}</p>
+                <p><strong>District:</strong> {{ application.district }}</p>
+                <p><strong>Purpose:</strong> {{ application.purpose }}</p>
+            </div>
+        </div>
+
+        <hr>
+        <h6>Uploaded Documents</h6>
+        {% if documents %}
+        <ul class="list-group mb-3">
+            {% for doc in documents %}
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                <span><i class="fa-solid fa-file"></i> {{ doc.doc_type }} — {{ doc.original_name }}</span>
+                <a href="{{ url_for('uploaded_file', app_id=application.id, filename=doc.stored_name) }}" target="_blank" class="btn btn-sm btn-outline-primary">View</a>
+            </li>
+            {% endfor %}
+        </ul>
+        {% else %}
+        <p class="text-muted">No documents uploaded.</p>
+        {% endif %}
+
+        {% if application.status == 'Rejected' and application.remarks %}
+        <div class="alert alert-danger"><strong>Rejection Reason:</strong> {{ application.remarks }}</div>
+        {% elif application.status == 'Approved' %}
+        <div class="alert alert-success d-flex justify-content-between align-items-center flex-wrap gap-2">
+            <span><i class="fa-solid fa-circle-check"></i> Your certificate has been approved and is ready for download.</span>
+            <a href="{{ url_for('download_certificate', app_id=application.id) }}" class="btn btn-success btn-sm"><i class="fa-solid fa-download"></i> Download Certificate</a>
+        </div>
+        {% elif application.remarks %}
+        <div class="alert alert-info"><strong>Officer Remarks:</strong> {{ application.remarks }}</div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

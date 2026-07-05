@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% block title %}My Dashboard - Online Certificate Portal{% endblock %}
+{% block content %}
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-4">
+        <h3 class="section-title mb-0">Welcome, {{ session.get('name') }}</h3>
+        <a href="{{ url_for('apply_certificate') }}" class="btn btn-gov-primary"><i class="fa-solid fa-file-circle-plus"></i> Apply for New Certificate</a>
+    </div>
+
+    <div class="row g-3 mb-4">
+        <div class="col-md-3 col-6">
+            <div class="stat-card bg-grad-blue">
+                <p>Total Applications</p>
+                <h2>{{ stats.total }}</h2>
+            </div>
+        </div>
+        <div class="col-md-3 col-6">
+            <div class="stat-card bg-grad-orange">
+                <p>Pending / In Review</p>
+                <h2>{{ stats.pending }}</h2>
+            </div>
+        </div>
+        <div class="col-md-3 col-6">
+            <div class="stat-card bg-grad-green">
+                <p>Approved</p>
+                <h2>{{ stats.approved }}</h2>
+            </div>
+        </div>
+        <div class="col-md-3 col-6">
+            <div class="stat-card bg-grad-red">
+                <p>Rejected</p>
+                <h2>{{ stats.rejected }}</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="dashboard-card">
+        <h5 class="mb-3">My Applications</h5>
+        {% if applications %}
+        <div class="table-responsive">
+            <table class="table table-gov table-hover align-middle">
+                <thead>
+                    <tr>
+                        <th>Application No.</th>
+                        <th>Certificate Type</th>
+                        <th>Applied On</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for app in applications %}
+                    <tr>
+                        <td>{{ app.application_no }}</td>
+                        <td>{{ app.cert_type }}</td>
+                        <td>{{ (app.created_at | parse_dt).strftime('%d-%m-%Y') }}</td>
+                        <td><span class="badge-status status-{{ app.status }}">{{ app.status }}</span></td>
+                        <td>
+                            <a href="{{ url_for('view_application', app_id=app.id) }}" class="btn btn-sm btn-outline-primary"><i class="fa-solid fa-eye"></i> View</a>
+                            {% if app.status == 'Approved' %}
+                            <a href="{{ url_for('download_certificate', app_id=app.id) }}" class="btn btn-sm btn-success"><i class="fa-solid fa-download"></i> Download</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <p class="text-muted text-center py-4">You haven't applied for any certificates yet. <a href="{{ url_for('apply_certificate') }}">Apply now</a>.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
